@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket Test</title>
+</head>
+<body>
+  <h2>WebSocket z FastAPI</h2>
+
+  <input id="msgInput" type="text" placeholder="Wpisz wiadomość">
+  <button onclick="sendMessage()">Wyślij</button>
+
+  <ul id="messages"></ul>
+
+  <script>
+    const socket = new WebSocket("ws://127.0.0.1:8000/ws");
+
+    socket.onopen = () => {
+      addMessage("✅ Połączono z serwerem!");
+    };
+
+    socket.onmessage = (event) => {
+      addMessage("📩 " + event.data);
+    };
+
+    socket.onclose = () => {
+      addMessage("❌ Połączenie zamknięte.");
+    };
+
+    function sendMessage() {
+      const input = document.getElementById("msgInput");
+      socket.send(input.value);
+      input.value = "";
+    }
+
+    function addMessage(msg) {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      document.getElementById("messages").appendChild(li);
+    }
+  </script>
+</body>
+</html>
