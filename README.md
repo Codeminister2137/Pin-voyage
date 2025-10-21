@@ -13,5 +13,6 @@ Proste formularze GET – np. wybór kategorii lub szukanie po nazwie.
 Wyniki wyświetlane zarówno na liście, jak i zaznaczone na mapie.
 Widok szczegółowy POI
 Kliknięcie na liście prowadzi do podstrony z opisem + mini mapką skupioną na tym punkcie.
-
+Wysyłanie tras lub obiektów innym użytkownikom
+Sugerowanie tras, ich modyfikacji lub obiektów na podstawie podobnych w bazie
 https://ariadnegraphql.org/docs/fastapi-integration
