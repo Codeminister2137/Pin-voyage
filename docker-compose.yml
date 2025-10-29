@@ -12,7 +12,7 @@ services:
     ports:
       - "5433:5433"
     volumes:
-      - ./db_data:/var/lib/postgresql/data
+      - db_data:/var/lib/postgresql/data
 
   pgadmin:
     image: dpage/pgadmin4
@@ -38,4 +38,4 @@ services:
       - ./app:/pin_voyage
 
 volumes:
-  postgis_data:
+  db_data:
