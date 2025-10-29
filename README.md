@@ -1,18 +1,35 @@
-Funkcjonalności:
-Mapa bazowa
-Generowana przy użyciu Folium (Python → HTML), osadzana w szablonie Jinja2.
-Startowo pokazuje Twoje miasto / region.
-Lista POI (points of interest)
-Przechowywane w bazie (np. Postgres + PostGIS).
-Każdy punkt ma: nazwę, kategorię (np. kawiarnia, park, zabytek), opis, współrzędne.
-Dodawanie nowych punktów
-Formularz w HTML (bez JS), wysyłający POST do FastAPI.
-Po zapisaniu punktu w bazie, mapa generuje się ponownie z nowym markerem.
-Filtrowanie / wyszukiwanie
-Proste formularze GET – np. wybór kategorii lub szukanie po nazwie.
-Wyniki wyświetlane zarówno na liście, jak i zaznaczone na mapie.
-Widok szczegółowy POI
-Kliknięcie na liście prowadzi do podstrony z opisem + mini mapką skupioną na tym punkcie.
-Wysyłanie tras lub obiektów innym użytkownikom
-Sugerowanie tras, ich modyfikacji lub obiektów na podstawie podobnych w bazie
+# Features
+
+### Base Map
+- Generated using **Folium** (Python → HTML), embedded in a **Jinja2** template.
+- Initially displays your city/region.
+
+### List of POIs (Points of Interest)
+- Stored in a database (e.g., **Postgres + PostGIS**).
+- Each point includes:
+  - name,
+  - category (e.g., café, park, landmark),
+  - description,
+  - coordinates.
+
+### Adding New Points
+- HTML form (no JS), sending a **POST** request to **FastAPI**.
+- After saving the point to the database, the map is regenerated with the new marker.
+
+### Filtering / Searching
+- Simple **GET** forms – e.g., category selection or name search.
+- Results are displayed both in a list and marked on the map.
+
+### Detailed POI View
+- Clicking on a list item leads to a subpage with a description + a mini map focused on that point.
+
+### Route Mode
+- Create, display and modify routes between chosen POI
+
+### Sending Routes or Objects to Other Users
+- Suggesting routes, their modifications, or objects based on similar entries in the database.
+
+---
+
+📎 FastAPI integration documentation with Ariadne:  
 https://ariadnegraphql.org/docs/fastapi-integration
