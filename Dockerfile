@@ -1,16 +1,20 @@
 FROM python:3.11-slim
 
-WORKDIR /app
+RUN pip install poetry
+
 
 RUN apt-get update && apt-get install -y \
     gcc libpq-dev g++ libgeos-dev proj-bin libproj-dev && \
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY ./pin_voyage /app
-
+RUN touch README.md
+COPY pyproject.toml .
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi --no-root
+WORKDIR /app
+COPY /pin_voyage .
+COPY .env .
 EXPOSE 8000
 
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+#CMD ["python", "database.py"]

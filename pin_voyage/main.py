@@ -1,12 +1,25 @@
 import uvicorn
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, Depends
 from pydantic import BaseModel
+from sqlalchemy import text
+from sqlalchemy.orm import Session
+
+from database import get_db
 
 app = FastAPI()
 
 
 class Item(BaseModel):
     message: str
+
+
+@app.get("/ping-db")
+def ping(db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+        return {"ping": "pong"}
+    except Exception as e:
+        return {"error": str(e)}
 
 
 @app.get("/", tags=[], response_model=Item)
@@ -39,4 +52,4 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 if __name__ == "__main__":
-    uvicorn.run("pin_voyage.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("pin_voyage.main:app", host="0.0.0.0", port=8001, reload=True)
