@@ -171,4 +171,7 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
+# docker volumes
 db_data
+pgadmin_data
+app

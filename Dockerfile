@@ -12,9 +12,11 @@ COPY pyproject.toml .
 RUN poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi --no-root
 WORKDIR /app
-COPY /pin_voyage .
-COPY .env .
+
+COPY /alembic ./alembic
+COPY /pin_voyage ./pin_voyage
+COPY .env alembic.ini ./
 EXPOSE 8000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "pin_voyage.main:app", "--host", "0.0.0.0", "--port", "8000"]
 #CMD ["python", "database.py"]

@@ -25,6 +25,8 @@ services:
       PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
 
   api:
     build: .
@@ -35,7 +37,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/pin_voyage
+      - .:/app
 
 volumes:
   db_data:
+  pgadmin_data:

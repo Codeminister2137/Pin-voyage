@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from database import get_db
+from pin_voyage.database import get_db
 
 app = FastAPI()
 
