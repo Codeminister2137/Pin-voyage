@@ -24,52 +24,9 @@ if config.config_file_name is not None:
 target_metadata = Base.metadata
 
 
-def include_object(object, name, type_, reflected, compare_to):
-    if type_ == "table" and name in (
-        "geometry_columns",
-        "spatial_ref_sys",
-        "raster_columns",
-        "raster_overviews",
-        "countysub_lookup",
-        "place",
-        "loader_lookuptables",
-        "zcta5",
-        "county_lookup",
-        "state",
-        "direction_lookup",
-        "tabblock20",
-        "zip_lookup_base",
-        "tract",
-        "addrfeat",
-        "place_lookup",
-        "featnames",
-        "pagc_rules",
-        "zip_state",
-        "tabblock",
-        "secondary_unit_lookup",
-        "state_lookup",
-        "pagc_gaz",
-        "topology",
-        "zip_lookup_all",
-        "spatial_ref_sys",
-        "layer",
-        "geocode_settings",
-        "geocode_settings_default",
-        "bg",
-        "faces",
-        "pagc_lex",
-        "loader_platform",
-        "zip_lookup",
-        "county",
-        "edges",
-        "cousub",
-        "street_type_lookup",
-        "loader_variables",
-        "zip_state_loc",
-        "addr",
-        "points",
-    ):
-        return False
+def include_name(name, type_, parent_names):
+    if type_ == "table":
+        return name in target_metadata.tables
     return True
 
 
@@ -95,7 +52,7 @@ def run_migrations_offline() -> None:
     context.configure(
         url=url,
         target_metadata=target_metadata,
-        include_object=include_object,
+        include_name=include_name,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
@@ -121,7 +78,7 @@ def run_migrations_online() -> None:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            include_object=include_object,
+            include_name=include_name,
         )
 
         with context.begin_transaction():
