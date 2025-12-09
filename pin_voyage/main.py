@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from shapely.geometry import Point as ShapelyPoint
 from pin_voyage.database import get_db
 from pin_voyage.models import Point
-from pin_voyage.schemas import PointCreate
+from pin_voyage.schemas import PointCreate, PointResponse
 
 app = FastAPI()
 
@@ -31,7 +31,7 @@ def home():
     return {"message": "Hello World!"}
 
 
-@app.post("/", tags=[])
+@app.post("/", tags=[], response_model=PointResponse)
 def create_points(payload: PointCreate, db: Session = Depends(get_db)):
     shape = ShapelyPoint(payload.geom_lon, payload.geom_lat)
     point = Point(
@@ -43,7 +43,7 @@ def create_points(payload: PointCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(point)
 
-    return {"message": point.id}
+    return point
 
 
 @app.put("/", tags=[], response_model=Item)
