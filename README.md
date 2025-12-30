@@ -4,7 +4,7 @@
 - Generated using **Folium** (Python → HTML), embedded in a **Jinja2** template.
 - Initially displays your city/region.
 
-### List of POIs (Points of Interest)
+### List of POIs (Points of Interest) DONE
 - Stored in a database (e.g., **Postgres + PostGIS**).
 - Each point includes:
   - name,
@@ -12,11 +12,11 @@
   - description,
   - coordinates.
 
-### Adding New Points
+### Adding New Points BACKEND DONE
 - HTML form (no JS), sending a **POST** request to **FastAPI**.
 - After saving the point to the database, the map is regenerated with the new marker.
 
-### Filtering / Searching
+### Filtering / Searching IN PROGRESS
 - Simple **GET** forms – e.g., category selection or name search.
 - Results are displayed both in a list and marked on the map.
 
@@ -31,5 +31,5 @@
 
 ---
 
-📎 FastAPI integration documentation with Ariadne:  
+📎 FastAPI integration documentation with Ariadne:
 https://ariadnegraphql.org/docs/fastapi-integration

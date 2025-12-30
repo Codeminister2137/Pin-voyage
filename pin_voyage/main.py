@@ -1,16 +1,14 @@
 import uvicorn
 from fastapi import FastAPI, WebSocket, Depends
-from geoalchemy2.shape import from_shape
 from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from shapely.geometry import Point as ShapelyPoint
 from pin_voyage.database import get_db
-from pin_voyage.models import Point
-from pin_voyage.schemas import PointCreate, PointResponse
+from pin_voyage.points_crud.router import router as points_router
 
 app = FastAPI()
+app.include_router(points_router)
 
 
 class Item(BaseModel):
@@ -29,21 +27,6 @@ def ping(db: Session = Depends(get_db)):
 @app.get("/", tags=[], response_model=Item)
 def home():
     return {"message": "Hello World!"}
-
-
-@app.post("/", tags=[], response_model=PointResponse)
-def create_points(payload: PointCreate, db: Session = Depends(get_db)):
-    shape = ShapelyPoint(payload.geom_lon, payload.geom_lat)
-    point = Point(
-        name=payload.name,
-        description=payload.description,
-        geom=from_shape(shape, srid=4326),
-    )
-    db.add(point)
-    db.commit()
-    db.refresh(point)
-
-    return point
 
 
 @app.put("/", tags=[], response_model=Item)
