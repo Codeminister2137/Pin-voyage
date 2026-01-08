@@ -19,6 +19,7 @@ class PointResponse(PointCreate):
     created_at: datetime | None
 
     @model_validator(mode="before")
+    @classmethod
     def convert_coords(cls, point_obj: Point) -> Self:
         geom = getattr(point_obj, "geom")
         geom_point = to_shape(geom)
@@ -31,6 +32,14 @@ class PointResponse(PointCreate):
         # This is equivalent to orm_mode=True
         "from_attributes": True
     }
+
+
+class PointUpdate(PointResponse):
+    @model_validator(mode="before")
+    @classmethod
+    def convert_coords(cls, point_obj: Point) -> Self:
+        # this is a dummy method to prevent wrong dictionary operations
+        return point_obj
 
 
 class PointList(BaseModel):
