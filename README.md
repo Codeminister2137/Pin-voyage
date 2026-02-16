@@ -1,45 +1,158 @@
-# Features
+# Pin-voyage
 
-### Base Map
-- Generated using **Folium** (Python → HTML), embedded in a **Jinja2** template.
-- Initially displays your city/region.
+## Overview
 
-### List of POIs (Points of Interest) DONE
-- Stored in a database (e.g., **Postgres + PostGIS**).
-- Each point includes:
-  - name,
-  - category (e.g., café, park, landmark),
-  - description,
-  - coordinates.
+Pin-voyage is a backend-first web application for collecting and exploring **Points of Interest (POIs)** using spatial data.
 
-### Adding New Points BACKEND DONE
-- HTML form (no JS), sending a **POST** request to **FastAPI**.
-- After saving the point to the database, the map is regenerated with the new marker.
-- If new point is too close to an existing one, suggest merging it into one
+The project deliberately prioritizes **backend architecture, data modeling, and spatial logic** over frontend complexity. All rendering is server-side; there is no JavaScript or client-side framework involved.
 
-### Filtering / Searching IN PROGRESS
-- Simple **GET** forms – e.g., category selection or name search.
-- Results are displayed both in a list and marked on the map.
+The application is built with:
 
-### Detailed POI View
-- Clicking on a list item leads to a subpage with a description + a mini map focused on that point.
+* **FastAPI** for routing and application logic
+* **PostgreSQL + PostGIS** for persistent spatial data
+* **Folium** for server-side map generation
+* **Jinja2** for HTML templating
+* **Docker Compose** as the default runtime
 
-### Route Mode (Steps: Get route and distance between A-B, suggest points by backed, return editable route)
-- Create, display and modify routes between chosen POI (Geoapify or Valhalla)
-- Allowing for multiple POI in a route
-- Making suggestions of POI on chosen route based on user preferences
-- Routes are by default private and can be shared to other users directly via a link
-- Rating routes themselves (unsure about need for this functionality, pushed off for later)
-
-### Sending Routes or Objects to Other Users
-- Suggesting routes, their modifications, or objects based on similar entries in the database.
-
-### Rating system
-- Allowing users to rate routes and points, calculating average rate
-
-### Rating based Points status change
-- Based on rating routes or points may be more, or less suggested (becoming private if really low rated)
 ---
 
-📎 FastAPI integration documentation with Ariadne:
-https://ariadnegraphql.org/docs/fastapi-integration
+## What exists today
+
+* FastAPI application with a modular router structure
+* CRUD operations for Points of Interest
+* PostgreSQL database with required PostGIS support
+* Alembic-based database migrations
+* Server-generated maps rendered into HTML templates
+* Fully containerized development setup
+
+This repository represents an **early but well-defined backend foundation**, designed to be extended incrementally.
+
+---
+
+## Design approach
+
+Pin-voyage treats maps as backend artifacts.
+
+The core flow is intentionally simple and predictable:
+
+1. A base map is generated using **Folium**.
+2. The map is embedded into a **Jinja2 template**.
+3. POIs are loaded from the database and rendered as markers and lists.
+4. User interactions are handled via standard HTTP requests and HTML forms.
+
+This approach keeps complexity on the backend, where spatial logic and data integrity can be enforced reliably.
+
+---
+
+## Project structure
+
+```
+pin_voyage/
+├── main.py                     # Application entry point
+├── points_crud/
+│   └── router.py               # POI CRUD router
+├── database/
+│   └── ...
+alembic/                        # Database migrations
+docker-compose.yml              # Default runtime setup
+pyproject.toml                  # Poetry configuration
+poetry.lock                     # Locked dependencies
+requirements.txt                # Auxiliary dependency list
+.env                             # Environment variables (not committed)
+.env.example                     # Example environment file
+```
+
+---
+
+## Dependency management
+
+**Poetry** is the primary dependency manager.
+
+* Dependencies are defined in `pyproject.toml`
+* Versions are locked in `poetry.lock`
+
+A `requirements.txt` file exists for auxiliary or compatibility purposes, but Poetry is the source of truth.
+
+---
+
+## Requirements
+
+* Docker
+* Docker Compose
+* Poetry
+* PostgreSQL with **PostGIS enabled**
+
+---
+
+## Installation
+
+Clone the repository:
+
+```sh
+git clone https://github.com/Codeminister2137/Pin-voyage.git
+cd Pin-voyage
+```
+
+Install dependencies:
+
+```sh
+poetry install
+```
+
+---
+
+## Environment configuration
+
+Create a local environment file:
+
+```sh
+cp .env.example .env
+```
+
+Fill in database connection details and required settings. PostGIS support is mandatory.
+
+---
+
+## Running the application
+
+The supported way to run the application is via Docker Compose:
+
+```sh
+docker-compose up --build
+```
+
+This starts the FastAPI application and the PostgreSQL + PostGIS database.
+
+---
+
+## Database migrations
+
+Database schema changes are managed using **Alembic**.
+
+Apply migrations inside the Docker environment:
+
+```sh
+docker-compose exec app alembic upgrade head
+```
+
+(Service name may vary depending on the Compose configuration.)
+
+---
+
+## API
+
+* Entry point: `pin_voyage/main.py`
+* POI routes: `pin_voyage/points_crud/router.py`
+
+Interactive documentation is available at:
+
+* `/docs`
+* `/redoc`
+
+---
+
+## Project status
+
+Pin-voyage is under active development.
+
+The backend foundation and spatial data handling are in place. Feature exploration and longer-term ideas are documented separately in `docs/ideas.md`.
