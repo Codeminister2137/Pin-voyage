@@ -1,0 +1,2 @@
+class PointNotFoundException(Exception):
+    pass
