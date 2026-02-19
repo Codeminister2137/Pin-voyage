@@ -22,7 +22,6 @@ The application is built with:
 * CRUD operations for Points of Interest
 * PostgreSQL database with required PostGIS support
 * Alembic-based database migrations
-* Server-generated maps rendered into HTML templates
 * Fully containerized development setup
 
 This repository represents an **early but well-defined backend foundation**, designed to be extended incrementally.
